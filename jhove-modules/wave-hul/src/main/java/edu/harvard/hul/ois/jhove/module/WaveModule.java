@@ -88,7 +88,6 @@ public class WaveModule extends ModuleBase {
     private static final String RIGHTS = "Copyright 2004-2007 by JSTOR and the "
             + "President and Fellows of Harvard College. "
             + "Released under the GNU Lesser General Public License.";
-    private static final String MSLIB_URL = "http://msdn.microsoft.com/library/default.asp?url=/library/en-us/"
 
     /** Fixed value for first four bytes of WAVE files */
     private static final String RIFF_SIGNATURE = "RIFF";
@@ -223,21 +222,24 @@ public class WaveModule extends ModuleBase {
 
 		Document doc = new Document("PCMWAVEFORMAT", DocumentType.WEB);
 		doc.setIdentifier(new Identifier(
-				MSLIB_URL + "multimed/htm/_win32_pcmwaveformat_str.asp",
+				"http://msdn.microsoft.com/library/default.asp?url=/library/en-us/"
+						+ "multimed/htm/_win32_pcmwaveformat_str.asp",
 				IdentifierType.URL));
 		doc.setPublisher(msAgent);
 		_specification.add(doc);
 
 		doc = new Document("WAVEFORMATEX", DocumentType.WEB);
 		doc.setIdentifier(new Identifier(
-				MSLIB_URL + "multimed/htm/_win32_waveformatex_str.asp",
+				"http://msdn.microsoft.com/library/default.asp?url=/library/en-us/"
+						+ "multimed/htm/_win32_waveformatex_str.asp",
 				IdentifierType.URL));
 		doc.setPublisher(msAgent);
 		_specification.add(doc);
 
 		doc = new Document("WAVEFORMATEXTENSIBLE", DocumentType.WEB);
 		doc.setIdentifier(new Identifier(
-				MSLIB_URL + "multimed/htm/_win32_waveformatextensible_str.asp",
+				"http://msdn.microsoft.com/library/default.asp?url=/library/en-us/"
+						+ "multimed/htm/_win32_waveformatextensible_str.asp",
 				IdentifierType.URL));
 		doc.setPublisher(msAgent);
 		_specification.add(doc);
@@ -252,7 +254,7 @@ public class WaveModule extends ModuleBase {
 
 		doc = new Document("Specification of the Broadcast Wave Format (BWF)",
 				DocumentType.REPORT);
-		doc.setIdentifier(new Identifier(FORMAT[2],
+		doc.setIdentifier(new Identifier("EBU Technical Specification 3285",
 				IdentifierType.OTHER));
 		doc.setIdentifier(
 				new Identifier("https://tech.ebu.ch/docs/tech/tech3285.pdf",
@@ -263,7 +265,7 @@ public class WaveModule extends ModuleBase {
 
 		doc = new Document("MBWF / RF64: An Extended File Format for Audio",
 				DocumentType.REPORT);
-		doc.setIdentifier(new Identifier(FORMAT[5],
+		doc.setIdentifier(new Identifier("EBU Technical Specification 3306",
 				IdentifierType.OTHER));
 		doc.setIdentifier(new Identifier(
 				"https://tech.ebu.ch/docs/tech/tech3306-2009.pdf",
@@ -295,7 +297,7 @@ public class WaveModule extends ModuleBase {
 				SignatureUseType.OPTIONAL, "For RF64 profile");
 		_signature.add(sig);
 
-		sig = new InternalSignature(RIFF_SIGNATURE, SignatureType.MAGIC,
+		sig = new InternalSignature("RIFF", SignatureType.MAGIC,
 				SignatureUseType.MANDATORY_IF_APPLICABLE, 0);
 		_signature.add(sig);
 
@@ -303,7 +305,7 @@ public class WaveModule extends ModuleBase {
 				SignatureUseType.MANDATORY_IF_APPLICABLE, 0);
 		_signature.add(sig);
 
-		sig = new InternalSignature(FORMATS[0], SignatureType.MAGIC,
+		sig = new InternalSignature("WAVE", SignatureType.MAGIC,
 				SignatureUseType.MANDATORY, 8);
 		_signature.add(sig);
 
@@ -361,7 +363,7 @@ public class WaveModule extends ModuleBase {
 
 			// Read the RIFF form type
 			String formType = read4Chars(_dstream);
-			if (!FORMAT[0].equals(formType)) {
+			if (!"WAVE".equals(formType)) {
 				info.setMessage(new ErrorMessage(
 						MessageConstants.WAVE_HUL_2,
 						_nByte - RIFF_FORM_TYPE_LENGTH));
@@ -678,7 +680,7 @@ public class WaveModule extends ModuleBase {
 		_aesMetadata = new AESAudioMetadata();
 		_aesMetadata.setByteOrder(AESAudioMetadata.LITTLE_ENDIAN);
 		_aesMetadata.setAnalogDigitalFlag("FILE_DIGITAL");
-		_aesMetadata.setFormat(FORMAT[0]);
+		_aesMetadata.setFormat("WAVE");
 		_aesMetadata.setUse("OTHER", "JHOVE_validation");
 		_aesMetadata.setDirection("NONE");
 
